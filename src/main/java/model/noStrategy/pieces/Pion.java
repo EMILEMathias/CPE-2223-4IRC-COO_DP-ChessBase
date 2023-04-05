@@ -21,7 +21,6 @@ public class Pion extends  AbstractPiece  {
 	 * @param couleur
 	 * @param coord
 	 */
-
 	public Pion(PieceSquareColor couleur, ModelCoord coord) {
 		super(couleur, coord);
 
@@ -37,24 +36,21 @@ public class Pion extends  AbstractPiece  {
 		int xFinal = finalCoord.getCol() -'a';
 		int yFinal = 8 - finalCoord.getLigne();
 		boolean ret = false;
-		PieceSquareColor color = this.getCouleur();
 
 		// Déplacement d'1 case en diagonale avec prise
 		if (actionType == ActionType.TAKE) {
 			
 			// Vers le bas en diagonale
-			if (color == PieceSquareColor.BLACK) {
+			if (this.hasThisColor(PieceSquareColor.BLACK)) {
 				
-				if ((yFinal == this.getY()+1 && xFinal == this.getX()+1) 
-						|| (yFinal == this.getY()+1 && xFinal == this.getX()-1)) {
+				if ((yFinal == this.getY()+1 && xFinal == this.getX()+1) || (yFinal == this.getY()+1 && xFinal == this.getX()-1)) {
 					ret = true;
 				}
 			}
 			// vers le haut en diagonale
-			if (color == PieceSquareColor.WHITE) {
+			if (this.hasThisColor(PieceSquareColor.WHITE)) {
 				
-				if ((yFinal == this.getY()-1 && xFinal == this.getX()+1) 
-						|| (yFinal == this.getY()-1 && xFinal == this.getX()-1)) {
+				if ((yFinal == this.getY()-1 && xFinal == this.getX()+1) || (yFinal == this.getY()-1 && xFinal == this.getX()-1)) {
 					ret = true;
 				}
 			}	
@@ -63,11 +59,9 @@ public class Pion extends  AbstractPiece  {
 		// d'1 case si le pion a déjà bougé, de 2 cases sinon
 		// vers le haut ou vers le bas selon sa couleur
 		else {
-			if ((xFinal == this.getX()) && (Math.abs(yFinal - this.getY()) <= 1 || 
-					(Math.abs(yFinal - this.getY()) <= 2 && !this.hasMoved()))) {
+			if ((xFinal == this.getX()) && (Math.abs(yFinal - this.getY()) <= 1 || (Math.abs(yFinal - this.getY()) <= 2 && !this.hasMoved()))) {
 
-				if ((color == PieceSquareColor.BLACK && (yFinal - this.getY() > 0))
-						|| (color == PieceSquareColor.WHITE && (yFinal - this.getY() < 0))) {
+				if ((this.hasThisColor(PieceSquareColor.BLACK) && (yFinal - this.getY() > 0)) || (this.hasThisColor(PieceSquareColor.WHITE) && (yFinal - this.getY() < 0))) {
 					ret = true;
 				}
 				
@@ -114,4 +108,6 @@ public class Pion extends  AbstractPiece  {
 		}
 		return ret;
 	}
+
+
 }

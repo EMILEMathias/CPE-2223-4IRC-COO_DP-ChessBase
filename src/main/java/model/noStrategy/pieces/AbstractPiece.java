@@ -85,6 +85,11 @@ public abstract class  AbstractPiece implements ChessPieceModel {
 	public String getName() {
 		return getClass().getSimpleName();
 	}
+
+	@Override
+	public PieceSquareColor getCouleur() {
+		return this.pieceColor;
+	}
 	
 	@Override
 	public boolean hasMoved() {

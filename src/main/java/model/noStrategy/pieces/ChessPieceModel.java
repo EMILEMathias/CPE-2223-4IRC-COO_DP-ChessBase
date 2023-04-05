@@ -40,10 +40,10 @@ public interface ChessPieceModel {
 //	 */
 //	public ModelCoord getCoord();
 //
-//	/**
-//	 * @return couleur de la piece
-//	 */
-//	public PieceSquareColor getCouleur();
+	/**
+	 * @return couleur de la piece
+	 */
+	public PieceSquareColor getCouleur();
 
 	/**
 	 * @return le nom de la pièce (Tour, Cavalier, etc.)

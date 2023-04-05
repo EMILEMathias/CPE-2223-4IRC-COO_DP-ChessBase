@@ -21,4 +21,5 @@ module irc4chessbase {
     requires transitive javafx.controls;
     // requires javafx.graphics;
     requires org.apache.commons.lang3;
+	requires javafx.base;
 }

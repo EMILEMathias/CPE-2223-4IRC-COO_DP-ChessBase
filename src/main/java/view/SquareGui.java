@@ -58,6 +58,16 @@ class SquareGui extends BorderPane implements ChessSquareGui{
 			}
 		});
 		 
+		
+		// ajoute un listener sur PaintStyle et surcharge 
+		// la méthode changed du listener pour actualiser les cases
+		GuiConfig.paintStyle.addListener(new ChangeListener<PaintStyle>() {
+			@Override
+			public void changed(ObservableValue<? extends PaintStyle> observable, PaintStyle oldValue, PaintStyle newValue) {
+				SquareGui.this.paint();
+			}
+		});
+		
 		// On dessine un carré
 		this.paint();
 

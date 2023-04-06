@@ -15,7 +15,7 @@ import shared.PieceSquareColor;
  * @author francoise.perrin - Alain BECKER
  * Inspiration Jacques SARAYDARYAN, Adrien GUENARD*
  */
-public class Pion extends  AbstractPiece  {
+public abstract class Pion extends  AbstractPiece  {
 	
 	/**
 	 * @param couleur
@@ -41,30 +41,17 @@ public class Pion extends  AbstractPiece  {
 		if (actionType == ActionType.TAKE) {
 			
 			// Vers le bas en diagonale
-			if (this.hasThisColor(PieceSquareColor.BLACK)) {
-				
-				if ((yFinal == this.getY()+1 && xFinal == this.getX()+1) || (yFinal == this.getY()+1 && xFinal == this.getX()-1)) {
-					ret = true;
-				}
-			}
-			// vers le haut en diagonale
-			if (this.hasThisColor(PieceSquareColor.WHITE)) {
-				
-				if ((yFinal == this.getY()-1 && xFinal == this.getX()+1) || (yFinal == this.getY()-1 && xFinal == this.getX()-1)) {
-					ret = true;
-				}
-			}	
+			byCorlorTake(xFinal, yFinal, ret);	
 		}
 		// Déplacement vertical sans prise  
 		// d'1 case si le pion a déjà bougé, de 2 cases sinon
 		// vers le haut ou vers le bas selon sa couleur
 		else {
-			if ((xFinal == this.getX()) && (Math.abs(yFinal - this.getY()) <= 1 || (Math.abs(yFinal - this.getY()) <= 2 && !this.hasMoved()))) {
-
-				if ((this.hasThisColor(PieceSquareColor.BLACK) && (yFinal - this.getY() > 0)) || (this.hasThisColor(PieceSquareColor.WHITE) && (yFinal - this.getY() < 0))) {
-					ret = true;
-				}
-				
+			if (
+            (xFinal == this.getX()) /*déplacement vertical*/
+            && 
+            (Math.abs(yFinal - this.getY()) <= 1 /*déplacement de norme < 1*/ || (Math.abs(yFinal - this.getY()) <= 2 && !this.hasMoved()) /*ou 2*/)) {
+				byCorlorMove(xFinal, yFinal, ret);
 			}
 		}
 		return ret;
@@ -108,6 +95,10 @@ public class Pion extends  AbstractPiece  {
 		}
 		return ret;
 	}
+
+	protected abstract boolean byCorlorMove(int xFinal, int yFinal, boolean ret);
+	
+	protected abstract boolean byCorlorTake(int xFinal, int yFinal, boolean ret);
 
 
 }

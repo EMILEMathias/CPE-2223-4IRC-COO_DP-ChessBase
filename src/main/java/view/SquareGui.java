@@ -48,7 +48,7 @@ class SquareGui extends BorderPane implements ChessSquareGui {
 
 		// On dessine un carré
 		this.paint();
-
+		// XD
 	}
 
 	/**

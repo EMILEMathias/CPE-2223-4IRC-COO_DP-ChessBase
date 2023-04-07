@@ -2,6 +2,7 @@ package view;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -37,6 +38,7 @@ class SquareGui extends BorderPane implements ChessSquareGui {
 		this.squareColor = squareColor;
 		this.gUICoord = gUICoord;
 		this.isLight = false;
+
 		
 		// la couleur est définie par les valeurs par défaut de configuration
 		if(PieceSquareColor.BLACK.equals(this.squareColor)) {

@@ -1,21 +1,14 @@
 package view;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
+import controller.localControler.Command;
+import controller.localControler.ReplayConversation;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.ToggleGroup;
-import view.GuiConfig;
-import view.PaintStyle;
+import javafx.scene.control.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -24,9 +17,15 @@ import view.PaintStyle;
  */
 public class MenuView extends MenuBar {
 
+	ReplayConversation replayConversation = new ReplayConversation(new Command() {
+		@Override
+		public void execute() {
+			GuiConfig.setInitState();
+		}
+	});
+
 	public MenuView () {
 		super();
-
 		this.getMenus().add(newMenuStyle());
 		this.getMenus().add(newMenuColor());
 		this.getMenus().add(newMenuEdit());
@@ -41,18 +40,22 @@ public class MenuView extends MenuBar {
 		color1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle (ActionEvent event) {
+
 				Dialog<Void> colorDialog = new Dialog<>();
 				colorDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
 				ColorPicker colorPicker = new ColorPicker(GuiConfig.whiteSquareColor.get());
 				colorPicker.setOnAction(colorEvent -> {
-										/* sans pattern Command */
-										GuiConfig.whiteSquareColor.set(colorPicker.getValue());
+					replayConversation.exec(new Command() {
+						@Override
+						public void execute() {
+							GuiConfig.whiteSquareColor.set(colorPicker.getValue());
+						}
+					});
 
-					
+
 					colorDialog.close();
 				});
-
 				colorDialog.getDialogPane().setContent(colorPicker);
 				colorDialog.show();
 			}
@@ -61,15 +64,21 @@ public class MenuView extends MenuBar {
 		color2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle (ActionEvent event) {
+
 				Dialog<Void> colorDialog = new Dialog<>();
 				colorDialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
 				ColorPicker colorPicker = new ColorPicker(GuiConfig.blackSquareColor.get());
 				colorPicker.setOnAction(colorEvent -> {
-										/* sans pattern Command */
-										GuiConfig.blackSquareColor.set(colorPicker.getValue());
 
-					
+					replayConversation.exec(new Command() {
+						@Override
+						public void execute() {
+							GuiConfig.blackSquareColor.set(colorPicker.getValue());
+						}
+					});
+
+
 					colorDialog.close();
 				});
 
@@ -96,31 +105,34 @@ public class MenuView extends MenuBar {
 		btnMap.put(style1, PaintStyle.GRADIENT);
 		btnMap.put(style2, PaintStyle.SOLID);
 
-		Object style = GuiConfig.paintStyle.get();
-		btnMap.forEach((menuItem, paintstyle) -> {
-			if (paintstyle.equals(style)) {
-				((RadioMenuItem) menuItem).setSelected(true);
-			}
-		});
-
 
 		style1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle (ActionEvent event) {
-								 /* sans pattern Command */
-								GuiConfig.paintStyle.set(PaintStyle.GRADIENT);			
-
-				
+				 replayConversation.exec(new Command() {
+					 @Override
+					 public void execute() {
+						 GuiConfig.paintStyle.set(PaintStyle.GRADIENT);
+						 Object style = GuiConfig.paintStyle.get();
+						 btnMap.forEach((menuItem, paintstyle) -> {
+							 if (paintstyle.equals(style)) {
+								 ((RadioMenuItem) menuItem).setSelected(true);
+							 }
+						 });
+					 }
+				 });
 			}
 		});
 
 		style2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle (ActionEvent event) {
-								 /* sans pattern Command */
-								GuiConfig.paintStyle.set(PaintStyle.SOLID);			
-
-				
+				replayConversation.exec(new Command() {
+					@Override
+					public void execute() {
+						GuiConfig.paintStyle.set(PaintStyle.SOLID);
+					}
+				});
 			}
 		});
 
@@ -131,20 +143,20 @@ public class MenuView extends MenuBar {
 	private Menu newMenuEdit () {
 
 		Menu menu = new Menu("Gestion Commandes");
-		MenuItem undo = new MenuItem("undo");
-		MenuItem redo = new MenuItem("redo");
+		MenuItem undo = new MenuItem("Undo");
+		MenuItem redo = new MenuItem("Redo");
 
 		undo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle (ActionEvent event) {
-				// TODO
+				replayConversation.undo();
 			}
 		});
 
 		redo.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle (ActionEvent event) {
-				// TODO
+				replayConversation.redo();
 			}
 		});
 

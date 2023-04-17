@@ -1,5 +1,6 @@
 package controller;
 
+import controller.localControler.Command;
 import shared.GUICoord;
 import shared.GameMode;
 import shared.PieceSquareColor;
